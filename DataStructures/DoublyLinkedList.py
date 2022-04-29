@@ -18,7 +18,8 @@ class LinkedListIterator:
         return self
 
     def __next__(self):
-        if not self.current:
+        # умова виходу з ітерації
+        if self.current is None:
             raise StopIteration
         else:
             item = self.current.data
@@ -34,6 +35,8 @@ class DoublyLinkedList:
     def __len__(self):
         current = self.head
         length = 0
+        # ітеруємо та інкрементуємо length,
+        # поки перетнемо останній елемент
         while current is not None:
             length += 1
             current = current.next
@@ -55,15 +58,22 @@ class DoublyLinkedList:
         return LinkedListIterator(self.head)
 
     
-    def get(self, idx):
+    def get_by_id(self, idx):
+        """
+        function returns element under the given index 
+        """
         current = self.head
         i = 0
+
+        # ітеруємо поки не досягнемо кінцевого елементу
         while current is not None:
             if i == idx:
-                return current.data 
+                return current
             current = current.next
             i += 1
-            return None
+
+        # індекс виходить за межі останнього індексу листа
+        return None
 
 
     def unshift(self, data):
@@ -109,6 +119,10 @@ class DoublyLinkedList:
 
 
     def insert(self, id, data):
+        """
+        function inserts Node in the given index,
+        moving forward the previous element under this id
+        """
         node = Node(data=data)
 
         if id == 0:
@@ -120,15 +134,22 @@ class DoublyLinkedList:
         
         current = self.head
         count = 1
+        # ітеруємо поки не досягнемо id-1 
         while count < id:
+            # якщо досягнули останнього id,
+            # то додаємо node в кінець листа
             if count == len(self):
                 current.next = node
                 node.prev = current
                 return 
             current = current.next
             count += 1
+        
+        # дублікуємо ноду, яка зараз знаходиться під id,
+        # в який ми вставляємо нову ноду 
         switched_node = current.next
 
+        # робимо switch ноди
         switched_node.prev = node
         node.next = switched_node
 
@@ -137,6 +158,9 @@ class DoublyLinkedList:
 
 
     def shift(self):
+        """
+        function deletes the first node of the list
+        """
         if self.head is None:
             return 
         next = self.head.next
@@ -146,6 +170,9 @@ class DoublyLinkedList:
 
 
     def pop(self):
+        """
+        function deletes and returns the last element of the list
+        """
         if self.head is None:
             print("Лист пустий")
             return 
@@ -164,7 +191,9 @@ class DoublyLinkedList:
         return current
 
     def is_empty(self):
+        """
+        function checks of the list is empty
+        """
         if self.head is None:
             return True
         return False
- 
