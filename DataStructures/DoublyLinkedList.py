@@ -22,7 +22,7 @@ class LinkedListIterator:
         if self.current is None:
             raise StopIteration
         else:
-            item = self.current.data
+            item = self.current
             self.current = self.current.next
             return item
 
@@ -50,7 +50,6 @@ class DoublyLinkedList:
             current = current.next
 
         print(" {}".format(current.data), end="")
-        current = current.next
         return ""
 
 
@@ -129,32 +128,32 @@ class DoublyLinkedList:
             switched_node = self.head
             self.head = node
             node.next = switched_node
-            switched_node.prev = node
+            # перевіряємо щоб попередній head node не був None
+            if switched_node is not None:
+                switched_node.prev = node
             return 
-        
+
+        # якщо id виходить за межі довжини листа,
+        # то додаємо елемент у кінець
+        if id >= len(self):
+            self.append(data)
+            return 
+
+        prev = None
         current = self.head
-        count = 1
+        count = 0
+
         # ітеруємо поки не досягнемо id-1 
         while count < id:
-            # якщо досягнули останнього id,
-            # то додаємо node в кінець листа
-            if count == len(self):
-                current.next = node
-                node.prev = current
-                return 
+            prev = current
             current = current.next
             count += 1
         
-        # дублікуємо ноду, яка зараз знаходиться під id,
-        # в який ми вставляємо нову ноду 
-        switched_node = current.next
-
         # робимо switch ноди
-        switched_node.prev = node
-        node.next = switched_node
-
-        current.next = node
-        node.prev = current
+        current.prev = node
+        node.next = current
+        prev.next = node
+        node.prev = prev
 
 
     def shift(self):
@@ -192,7 +191,7 @@ class DoublyLinkedList:
 
     def is_empty(self):
         """
-        function checks of the list is empty
+        function checks if the list is empty
         """
         if self.head is None:
             return True
