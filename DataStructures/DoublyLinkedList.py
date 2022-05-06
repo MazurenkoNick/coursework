@@ -55,6 +55,19 @@ class DoublyLinkedList:
 
     def __iter__(self):
         return LinkedListIterator(self.head)
+    
+
+    def __setitem__(self, id, data):
+        node = self.get_by_id(id)
+        if node is not None:
+            node.data = data
+        else:
+            raise IndexError
+
+
+    def __getitem__(self, id):
+        node = self.get_by_id(id)
+        return node.data if node else None
 
     
     def get_by_id(self, idx):
