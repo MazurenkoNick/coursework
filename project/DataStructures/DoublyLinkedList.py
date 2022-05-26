@@ -27,7 +27,7 @@ class LinkedListIterator:
             return item
 
 
-class DoublyLinkedList:
+class LinkedList:
     def __init__(self):
         self.head = None
 
@@ -45,12 +45,14 @@ class DoublyLinkedList:
 
     def __str__(self):
         current = self.head
-        while current.next is not None:
-            print(" {}".format(current.data), end="")
-            current = current.next
+        string = '['
+        if len(self) > 1:
+            while current.next is not None:
+                string += "{}, ".format(current.data)
+                current = current.next
 
-        print(" {}".format(current.data), end="")
-        return ""
+            string += "{}]".format(current.data)
+        return string
 
 
     def __iter__(self):
@@ -58,7 +60,7 @@ class DoublyLinkedList:
     
 
     def __setitem__(self, id, data):
-        node = self.get_by_id(id)
+        node = self._get_by_id(id)
         if node is not None:
             node.data = data
         else:
@@ -66,11 +68,35 @@ class DoublyLinkedList:
 
 
     def __getitem__(self, id):
-        node = self.get_by_id(id)
+        node = self._get_by_id(id)
         return node.data if node else None
 
+
+    def __add__(self, other):
+        if isinstance(other, LinkedList):
+            list = LinkedList()
+            for node in self:
+                list.append(node.data)
+            for node in other:
+                list.append(node.data)
+            return list
+        return "Can't concatenate these two objects"
+
     
-    def get_by_id(self, idx):
+    def __contains__(self, value):
+        if self.head is None:
+            return False
+        
+        current = self.head
+
+        while current is not None: 
+            if current.data == value:
+                return True
+            current = current.next
+        return False
+
+    
+    def _get_by_id(self, idx):
         """
         function returns element under the given index 
         """
@@ -173,8 +199,9 @@ class DoublyLinkedList:
         """
         function deletes the first node of the list
         """
-        if self.head is None:
-            return 
+        if self.head is None or len(self) == 1:
+            return self.pop()
+        
         next = self.head.next
         self.head.next = None
         next.prev = None
@@ -186,8 +213,12 @@ class DoublyLinkedList:
         function deletes and returns the last element of the list
         """
         if self.head is None:
-            print("Лист пустий")
-            return 
+            return None
+
+        if len(self) == 1:
+            node = self.head
+            self.head = None
+            return node
         
         current = self.head
         
@@ -201,6 +232,7 @@ class DoublyLinkedList:
         prev_node.next = None
         current.prev = None
         return current
+
 
     def is_empty(self):
         """
