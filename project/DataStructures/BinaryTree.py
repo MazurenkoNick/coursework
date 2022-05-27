@@ -84,9 +84,69 @@ class TreeNode:
         elif self.key < key:
             return TreeNode.get_by_key(self.right, key)
 
-    def delete(self, key):
-        pass
-        
+    def delete_root(self):
+        # якщо лише один елемент у дереві - видалити його
+        if self.left is None and self.right is None:
+            return None
+
+        # якщо немає правої сторони дерева - змістити root вліво
+        elif self.left and self.right is None:
+            self.key = self.left.key
+            if isinstance(self, BSTNode):
+                self.value = self.left.value
+            self.left = TreeNode.delete_node(self.left, self.key)
+
+        # якщо немає лівої сторони дерева - змістити root вправо
+        elif self.left is None and self.right:
+            self.key = self.right.key
+            if isinstance(self, BSTNode):
+                self.value = self.right.value
+            self.right = TreeNode.delete_node(self.right, self.key)
+            
+        # якщо 2 дочірні існують:
+        # знаходимо мінімальний елемент справа від видаленої
+        # і його дані зміщуємо на місце видаленої ноди.
+        # Видаляємо цей елемент з минулого місця.
+        else:
+            pointer = self.right
+            while pointer.left is not None:
+                pointer = pointer.left
+            self.key = pointer.key
+            self.right = TreeNode.delete_node(self.right, self.key)
+
+        return self
+
+
+    def delete_node(self, key):
+        """
+        method deletes the node by the given key, except for the root node
+        """
+        if self is None:
+            return None
+
+        if self.key == key:
+            # 4 відвітвлення:
+            if self.left is None and self.right is None: 
+                return None
+            if self.left is None and self.right:
+                return self.right
+            if self.left and self.right is None:
+                return self.left
+
+            pointer = self.right
+            while pointer.left is not None:
+                pointer = pointer.left
+            self.key = pointer.key
+            if isinstance(self, BSTNode):
+                self.value = pointer.value
+            self.right = TreeNode.delete_node(self.right, self.key)
+
+        elif self.key > key:
+            self.left = TreeNode.delete_node(self.left, key)
+        else:
+            self.right = TreeNode.delete_node(self.right, key)
+
+        return self
 
 
 class BSTNode(TreeNode):
@@ -115,7 +175,6 @@ class BSTNode(TreeNode):
             self.left.parent = self
         return self
 
-
     def update(self, key, value):
         """
         function updates the value of the node with a key,
@@ -127,3 +186,12 @@ class BSTNode(TreeNode):
             node.value = value
         else:
             raise KeyError
+
+tree = BSTNode('5.5.5.5', 'Nick')
+tree.insert('1.1.1.1', 'Ivan')
+tree.insert('2.2.2.2', 'Taras') 
+tree.insert('3.3.3.3', 'Kirill') 
+tree.insert('4.4.4.4', 'Petr') 
+
+tree.delete_root()
+print(tree)

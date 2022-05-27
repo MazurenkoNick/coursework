@@ -22,6 +22,7 @@ class BSTTests(unittest.TestCase):
     def test_insert(self):
         self.tree.insert('6.6.6.6', 'Anny')
         self.assertEqual(self.tree.get_by_key('6.6.6.6').value, 'Anny')
+        self.assertEqual(self.tree.get_by_key('5.5.5.5').right, self.tree.get_by_key('6.6.6.6'))
         self.assertEqual(self.tree.size(), 6)
 
     def test_update(self):
@@ -45,6 +46,32 @@ class BSTTests(unittest.TestCase):
     def test_contains(self):
         tree = BSTNode('1.1.1.1', '1')
         self.assertTrue('1.1.1.1' in tree)
+
+    def test_delete_node(self):
+        # self.tree = BSTNode('5.5.5.5', 'Nick')
+        # self.tree.insert('1.1.1.1', 'Ivan')
+        # self.tree.insert('2.2.2.2', 'Taras') 
+        # self.tree.insert('3.3.3.3', 'Kirill') 
+        # self.tree.insert('4.4.4.4', 'Petr')  
+
+        self.tree.delete_node('2.2.2.2')
+        self.assertEqual(self.tree.get_by_key('1.1.1.1').right, self.tree.get_by_key('3.3.3.3'))
+        self.tree.delete_node('4.4.4.4')
+        self.assertEqual(self.tree.get_by_key('3.3.3.3').right, None)
+        self.tree.insert('6.6.6.6', 'Anny')
+        self.tree.delete_node('5.5.5.5')
+        self.assertEqual(self.tree, self.tree.get_by_key('6.6.6.6'))
+        self.assertEqual(self.tree.value,'Anny')
+        self.assertEqual(self.tree.get_by_key('5.5.5.5'), None)
+
+    def test_delete_root(self):
+        self.tree.insert('6.6.6.6', 'ls')
+        self.tree.delete_root()
+        self.assertEqual(self.tree, self.tree.get_by_key('6.6.6.6'))
+        self.tree.delete_root()
+        self.assertEqual(self.tree, self.tree.get_by_key('1.1.1.1'))
+
+
 
 
 if __name__ == '__main__':
