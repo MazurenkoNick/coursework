@@ -32,10 +32,11 @@ class TreeNodeIterator:
 
 
 class TreeNode:
-    def __init__(self, key):
+    def __init__(self, key, root_key=None):
         self.key = key
         self.left = None
         self.right = None
+        self.root_key = root_key
 
     def __iter__(self):
         return TreeNodeIterator(self)
@@ -84,38 +85,6 @@ class TreeNode:
         elif self.key < key:
             return TreeNode.get_by_key(self.right, key)
 
-    def delete_root(self):
-        # якщо лише один елемент у дереві - видалити його
-        if self.left is None and self.right is None:
-            return None
-
-        # якщо немає правої сторони дерева - змістити root вліво
-        elif self.left and self.right is None:
-            self.key = self.left.key
-            if isinstance(self, BSTNode):
-                self.value = self.left.value
-            self.left = TreeNode.delete_node(self.left, self.key)
-
-        # якщо немає лівої сторони дерева - змістити root вправо
-        elif self.left is None and self.right:
-            self.key = self.right.key
-            if isinstance(self, BSTNode):
-                self.value = self.right.value
-            self.right = TreeNode.delete_node(self.right, self.key)
-            
-        # якщо 2 дочірні існують:
-        # знаходимо мінімальний елемент справа від видаленої
-        # і його дані зміщуємо на місце видаленої ноди.
-        # Видаляємо цей елемент з минулого місця.
-        else:
-            pointer = self.right
-            while pointer.left is not None:
-                pointer = pointer.left
-            self.key = pointer.key
-            self.right = TreeNode.delete_node(self.right, self.key)
-
-        return self
-
 
     def delete_node(self, key):
         """
@@ -126,13 +95,22 @@ class TreeNode:
 
         if self.key == key:
             # 4 відвітвлення:
-            if self.left is None and self.right is None: 
+            # якщо поточний елемент є листом, то просто видалити його
+            if self.left is None and self.right is None:
                 return None
+
+            # якщо у видаленого елемента немає лівої сторони - повернути праву
             if self.left is None and self.right:
                 return self.right
+
+            # якщо у видаленого елемента немає правої сторони - повернути ліву
             if self.left and self.right is None:
                 return self.left
 
+        # якщо 2 дочірні існують:
+        # знаходимо мінімальний елемент справа від видаленої
+        # і його дані зміщуємо на місце видаленої ноди.
+        # Видаляємо цей елемент з минулого місця.
             pointer = self.right
             while pointer.left is not None:
                 pointer = pointer.left
@@ -149,9 +127,28 @@ class TreeNode:
         return self
 
 
+    def display_keys(self, space='\t', level=0):
+        # print(node.key if node else None, level)
+    
+        # If the node is empty
+        if self is None:
+            print(space*level + '∅')
+            return
+
+        # If the node is a leaf 
+        if self.left is None and self.right is None:
+            print(space*level + str(self.key))
+            return
+    
+        # If the node has children
+        TreeNode.display_keys(self.right, space, level+1)
+        print(space*level + str(self.key))
+        TreeNode.display_keys(self.left,space, level+1)
+
+
 class BSTNode(TreeNode):
-    def __init__(self, key, value=None):
-        super().__init__(key)
+    def __init__(self, key, value=None, root_key=None):
+        super().__init__(key, root_key)
         self.value = value
         self.parent = None
 
@@ -186,12 +183,4 @@ class BSTNode(TreeNode):
             node.value = value
         else:
             raise KeyError
-
-tree = BSTNode('5.5.5.5', 'Nick')
-tree.insert('1.1.1.1', 'Ivan')
-tree.insert('2.2.2.2', 'Taras') 
-tree.insert('3.3.3.3', 'Kirill') 
-tree.insert('4.4.4.4', 'Petr') 
-
-tree.delete_root()
-print(tree)
+            
