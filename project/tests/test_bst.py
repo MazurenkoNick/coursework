@@ -11,8 +11,8 @@ class BSTTests(unittest.TestCase):
         self.tree.insert('4.4.4.4', 'Petr') 
 
     def test_contains(self):
-        self.assertEqual(self.tree.contains('1.1.1.1'), True)
-        self.assertEqual(self.tree.contains('1.1.1.2'), False)
+        self.assertEqual('1.1.1.1' in self.tree, True)
+        self.assertEqual('1.1.1.2' in self.tree, False)
 
     def test_get(self):
         self.assertEqual(self.tree.get_by_key('1.1.1.1').value, 'Ivan')

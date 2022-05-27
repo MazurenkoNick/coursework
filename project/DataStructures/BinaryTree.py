@@ -49,7 +49,6 @@ class TreeNode:
         else:
             return False
 
-
     def height(self):
         """
         function returns height of the tree
@@ -85,6 +84,10 @@ class TreeNode:
         elif self.key < key:
             return TreeNode.get_by_key(self.right, key)
 
+    def delete(self, key):
+        pass
+        
+
 
 class BSTNode(TreeNode):
     def __init__(self, key, value=None):
@@ -112,15 +115,6 @@ class BSTNode(TreeNode):
             self.left.parent = self
         return self
 
-    def contains(self, key):
-        """
-        function checks if the tree contains the node with a key,
-        that's passed as an argument to the method
-        """
-        node = self.get_by_key(key)
-        if node is None:
-            return False
-        return True
 
     def update(self, key, value):
         """

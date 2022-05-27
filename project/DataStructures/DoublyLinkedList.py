@@ -46,12 +46,20 @@ class LinkedList:
     def __str__(self):
         current = self.head
         string = '['
-        if len(self) > 1:
-            while current.next is not None:
-                string += "{}, ".format(current.data)
-                current = current.next
+        if len(self) >= 1:
+            if not isinstance(current.data, LinkedList):
+                while current.next is not None:
+                    string += f"{current.data}, "
+                    current = current.next
+                string += f"{current.data}"
+            else:
+                while current.next is not None:
+                    string += current.data.__str__()
+                    string += ",\n "
+                    current = current.next
+                string += current.data.__str__()
 
-            string += "{}]".format(current.data)
+        string += "]"
         return string
 
 
@@ -241,3 +249,14 @@ class LinkedList:
         if self.head is None:
             return True
         return False
+
+    @staticmethod
+    def get_matrix(len_rows, len_columns):
+        list = LinkedList()
+        for i in range(len_rows):
+            row = LinkedList()
+            for j in range(len_columns):
+                row.append(0)
+                
+            list.append(row)
+        return list
