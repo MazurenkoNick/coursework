@@ -59,7 +59,5 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(self.tree.get_by_key('5.5.5.5'), None)
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

@@ -18,6 +18,10 @@ class LinkedListTests(unittest.TestCase):
         for i in range(10):
             self.list.insert(i, i+1)
             self.assertEqual(self.list[i], i+1)
+        
+        for i in range(10):
+            self.list.insert(i, i-1)
+            self.assertEqual(self.list[i], i-1)
 
     def test_setitem(self):
         for i in range(10):
@@ -42,11 +46,16 @@ class LinkedListTests(unittest.TestCase):
         self.list.append(1)
         self.assertEqual(self.list.is_empty(), False)
 
+    def test_remove(self):
+        for i in range(0,10,-1):
+            self.list2.remove(i)
+
     def test_get_matrix(self):
         matrix = LinkedList.get_matrix(10, 5)
         for i in range(10):
             for j in range(5):
                 self.assertEqual(matrix[i][j], 0)
+        
 
 
 if __name__ == '__main__':

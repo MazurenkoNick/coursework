@@ -32,11 +32,10 @@ class TreeNodeIterator:
 
 
 class TreeNode:
-    def __init__(self, key, root_key=None):
+    def __init__(self, key):
         self.key = key
         self.left = None
         self.right = None
-        self.root_key = root_key
 
     def __iter__(self):
         return TreeNodeIterator(self)
@@ -107,10 +106,10 @@ class TreeNode:
             if self.left and self.right is None:
                 return self.left
 
-        # якщо 2 дочірні існують:
-        # знаходимо мінімальний елемент справа від видаленої
-        # і його дані зміщуємо на місце видаленої ноди.
-        # Видаляємо цей елемент з минулого місця.
+            # якщо 2 дочірні існують:
+            # знаходимо мінімальний елемент справа від видаленої
+            # і його дані зміщуємо на місце видаленої ноди.
+            # Видаляємо цей елемент з минулого місця.
             pointer = self.right
             while pointer.left is not None:
                 pointer = pointer.left
@@ -127,32 +126,30 @@ class TreeNode:
         return self
 
 
-    def display_keys(self, space='\t', level=0):
-        # print(node.key if node else None, level)
-    
-        # If the node is empty
+    def display_keys(self, space='\t', level=0):    
+        # якщо вершина пуста
         if self is None:
             print(space*level + '∅')
             return
 
-        # If the node is a leaf 
+        # якщо вершина - лист
         if self.left is None and self.right is None:
             print(space*level + str(self.key))
             return
     
-        # If the node has children
+        # якщо вершина має дочірні вершини
         TreeNode.display_keys(self.right, space, level+1)
         print(space*level + str(self.key))
         TreeNode.display_keys(self.left,space, level+1)
 
 
 class BSTNode(TreeNode):
-    def __init__(self, key, value=None, root_key=None):
-        super().__init__(key, root_key)
+    def __init__(self, key, value=None,):
+        super().__init__(key)
         self.value = value
         self.parent = None
 
-    def insert(self, key, value):
+    def insert(self, key, value=None):
         """
         function creates and inserts new BSTNode into 
         the tree using key-value pair, that's passed

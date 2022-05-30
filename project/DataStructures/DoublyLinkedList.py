@@ -241,6 +241,39 @@ class LinkedList:
         current.prev = None
         return current
 
+    def remove(self, value):
+        current = self.head
+
+        # якщо лист пустий - повернути None
+        if self.is_empty(): 
+            return None
+
+        # якщо значення першого елементу й 
+        # значення аргументу збіглись - викликати shift()
+        if self.head.data == value:
+            return self.shift()
+        
+        # пройтись по кожному елементу листа, окрім останнього,
+        # перевірити на рівність значення з аргументу й листа,
+        # видалити при збіжності, ні - продовжити ітерацію
+        while current.next is not None:
+            if current.data == value:
+                next_node = current.next
+                prev_node = current.prev
+                next_node.prev = prev_node
+                prev_node.next = next_node
+                return
+            current = current.next
+        
+        # якщо значення останнього елемента дорівнює значенню
+        # аргумента - викликати метод pop() 
+        if current.data == value: 
+            return self.pop()
+
+        print('Element was\'nt found')
+        print(self)
+        return None
+
 
     def is_empty(self):
         """
@@ -251,7 +284,7 @@ class LinkedList:
         return False
 
     @staticmethod
-    def get_matrix(len_rows, len_columns):
+    def get_matrix(len_rows, len_columns=0):
         list = LinkedList()
         for i in range(len_rows):
             row = LinkedList()
