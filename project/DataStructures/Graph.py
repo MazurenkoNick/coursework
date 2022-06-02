@@ -1,4 +1,3 @@
-from os import stat
 from .DoublyLinkedList import LinkedList
 
 class Graph:
@@ -16,7 +15,7 @@ class Graph:
     def __repr__(self):
         string = ""
         for idx_node, neighbours in enumerate(self.data):
-            string += f"{self.vertexes[idx_node]}:" +\
+            string += f"{self.vertexes[idx_node]}: " +\
                 f"{list(self.vertexes[i] for i in neighbours)}\n"
         return string
 
@@ -149,5 +148,5 @@ class Graph:
 
     def all_shortests_paths(self, source):
         for i in range(self.num_nodes):
-            print(f"Затримка з {self.vertexes[source]} до {self.vertexes[i]} - {round(self.shortest_path(source, i), 2)}")
+            print(f"Затримка з {self.vertexes[source]} до {self.vertexes[i]} - {round(self.shortest_path(source, i), 2)} ms")
 

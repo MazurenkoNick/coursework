@@ -145,16 +145,16 @@ class TreeNode:
 
 
 class BSTNode(TreeNode):
-    def __init__(self, key, value=None,):
+    def __init__(self, key, value=None):
         super().__init__(key)
         self.value = value
         self.parent = None
 
-    def __repr__(self):
+    def print_all(self):
         string = ''
         for node in self:
             string += f'{node.key}: {node.value}\n'
-        return string
+        print(string)
 
     def insert(self, key, value=None):
         """
