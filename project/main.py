@@ -3,23 +3,30 @@ from DataStructures.BinaryTree import BSTNode
 from DataStructures.DoublyLinkedList import LinkedList
 from csv import DictReader
 
-edges = []
-vertexes = []
+edges = LinkedList()
+vertexes = LinkedList()
 bst = BSTNode('me', '0.0.0.0')
 vertexes.append('0.0.0.0')
 
+# додавання ребер у edges
 with open("edges.csv") as f:
-	file = DictReader(f)				
+    file = DictReader(f)
+    for edge in file:
+        e = LinkedList()
+        e.append(int(edge['vertex1']))
+        e.append(int(edge['vertex2']))
+        e.append(int(edge['weight']))
+        edges.append(e)
 
-	for edge in file:
-		edges.append([int(edge['vertex1']),\
-                int(edge['vertex2']), int(edge['weight'])])
-
+# заповнення бінарного дерева та додавання вершин у vertexes
 with open('IPs.csv') as f:
     file = DictReader(f)
     for row in file:
         dns = row['DNS']
-        ips = row['IP'].split(',')
+        ips = LinkedList()
+        for ip in row['IP'].split(','):
+            ips.append(ip)
+
         bst.insert(dns, ips)
         for ip in ips:
             vertexes.append(ip)
@@ -29,6 +36,7 @@ bst.print_all()
 
 g1 = Graph(6, directed=False)
 
+# додавання вершин і ребер у граф
 for i in edges:
     g1.addEdge(i)
 for v in vertexes:
