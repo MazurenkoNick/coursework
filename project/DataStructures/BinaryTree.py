@@ -12,21 +12,22 @@ class TreeNodeIterator:
         return self
 
     def __next__(self):
-        # ініціалізуємо ноду листа, беручи її зі стаку
-        list_node = self.stack.pop()
-        if list_node is None:
+        # ініціалізуємо вершину, беручи її зі стаку
+        node = self.stack.pop()
+        if node is None:
             raise StopIteration
         
-        # ініціалізуємо праву ноду BST 
-        self.current = list_node.data.right
+        # ініціалізуємо праву вершину
+        self.current = node.right
 
         # додаємо всі елементи поточної (правої) ноди до стаку
         self._append_left_side()
         
-        return list_node.data
+        return node
 
     def _append_left_side(self):
-        while self.current is not None:
+        """adds every left element of the current node to the stack"""
+        while self.current:
             self.stack.append(self.current)
             self.current = self.current.left
 
@@ -74,7 +75,7 @@ class TreeNode:
         if self is None:
             return None
 
-        # знайшли відповідний ключ, повертаємо ноду.
+        # знайшли відповідний ключ, повертаємо вершину.
         elif key == self.key:
             return self
 
@@ -111,7 +112,7 @@ class TreeNode:
             # і його дані зміщуємо на місце видаленої ноди.
             # Видаляємо цей елемент з минулого місця.
             pointer = self.right
-            while pointer.left is not None:
+            while pointer.left:
                 pointer = pointer.left
             self.key = pointer.key
             if isinstance(self, BSTNode):
@@ -149,6 +150,12 @@ class BSTNode(TreeNode):
         self.value = value
         self.parent = None
 
+    def __repr__(self):
+        string = ''
+        for node in self:
+            string += f'{node.key}: {node.value}\n'
+        return string
+
     def insert(self, key, value=None):
         """
         function creates and inserts new BSTNode into 
@@ -176,8 +183,7 @@ class BSTNode(TreeNode):
         the second argument
         """
         node = self.get_by_key(key)
-        if node is not None:
+        if node:
             node.value = value
         else:
             raise KeyError
-            

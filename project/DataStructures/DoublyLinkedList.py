@@ -1,8 +1,8 @@
 class Node:
     def __init__(self, next=None, prev=None, data=None):
-        # посилання на наступну ноду
+        # посилання на наступну вершину
         self.next = next 
-        # посилання на минулу ноду
+        # посилання на минулу вершину
         self.prev = prev
         self.data = data
 
@@ -24,7 +24,7 @@ class LinkedListIterator:
         else:
             item = self.current
             self.current = self.current.next
-            return item
+            return item.data
 
 
 class LinkedList:
@@ -37,7 +37,7 @@ class LinkedList:
         length = 0
         # ітеруємо та інкрементуємо length,
         # поки перетнемо останній елемент
-        while current is not None:
+        while current:
             length += 1
             current = current.next
         return length
@@ -48,12 +48,16 @@ class LinkedList:
         string = '['
         if len(self) >= 1:
             if not isinstance(current.data, LinkedList):
-                while current.next is not None:
+                # додати всі елементи до строки 
+                while current.next:
                     string += f"{current.data}, "
                     current = current.next
                 string += f"{current.data}"
+
+            # якщо лист містить інші листи (матриця)
             else:
-                while current.next is not None:
+                # додати всі елементи до строки 
+                while current.next:
                     string += current.data.__str__()
                     string += ",\n "
                     current = current.next
@@ -69,7 +73,7 @@ class LinkedList:
 
     def __setitem__(self, id, data):
         node = self._get_by_id(id)
-        if node is not None:
+        if node:
             node.data = data
         else:
             raise IndexError
@@ -81,10 +85,13 @@ class LinkedList:
 
 
     def __add__(self, other):
+        """concatenate two lists"""
         if isinstance(other, LinkedList):
             list = LinkedList()
+            # додаємо всі елементи поточного листа
             for node in self:
                 list.append(node.data)
+            # додаємо всі елементи іншого листа
             for node in other:
                 list.append(node.data)
             return list
@@ -92,12 +99,15 @@ class LinkedList:
 
     
     def __contains__(self, value):
-        if self.head is None:
+        # якщо лист пустий
+        if self.is_empty():
             return False
         
         current = self.head
-
-        while current is not None: 
+        
+        # ітеруємо поки не знайдемо відповідний елемент,
+        # або, поки не проітеруємо весь лист
+        while current: 
             if current.data == value:
                 return True
             current = current.next
@@ -112,7 +122,7 @@ class LinkedList:
         i = 0
 
         # ітеруємо поки не досягнемо кінцевого елементу
-        while current is not None:
+        while current:
             if i == idx:
                 return current
             current = current.next
@@ -127,15 +137,15 @@ class LinkedList:
         function adds Node with data, that's passed as an
         argumnet, to the beginning of the list
         """
-        # ініціалізуємо ноду
+        # ініціалізуємо вершину
         node = Node(data=data)
 
-        # визначаємо наступну ноду та минулу 
+        # визначаємо наступну вершину та минулу 
         node.next = self.head
         node.prev = None
 
-        # змінюємо минулу ноду в head node на теперішню
-        if self.head is not None:
+        # змінюємо минулу вершину в head node на теперішню
+        if self.head:
             self.head.prev = node
 
         # змінюємо head node вказівник на теперішню
@@ -157,7 +167,7 @@ class LinkedList:
             return 
         
         # йдемо до останнього елементу листа
-        while current.next is not None:
+        while current.next:
             current = current.next
 
         current.next = node
@@ -176,7 +186,7 @@ class LinkedList:
             self.head = node
             node.next = switched_node
             # перевіряємо щоб попередній head node не був None
-            if switched_node is not None:
+            if switched_node:
                 switched_node.prev = node
             return 
 
@@ -210,13 +220,17 @@ class LinkedList:
         if self.head is None or len(self) == 1:
             return self.pop()
         
-        next = self.head.next
+        node = self.head
+
+        next_node = self.head.next
         self.head.next = None
-        next.prev = None
-        self.head = next
+        next_node.prev = None
+        self.head = next_node
+
+        return node.data
 
 
-    def pop(self):
+    def pop(self, idx=None):
         """
         function deletes and returns the last element of the list
         """
@@ -226,12 +240,12 @@ class LinkedList:
         if len(self) == 1:
             node = self.head
             self.head = None
-            return node
+            return node.data
         
         current = self.head
         
         # шукаємо останній елемент у листі
-        while current.next is not None:
+        while current.next:
             current = current.next
 
         # видаляємо останній елемент, видаляючи
@@ -239,7 +253,7 @@ class LinkedList:
         prev_node = current.prev
         prev_node.next = None
         current.prev = None
-        return current
+        return current.data
 
     def remove(self, value):
         current = self.head
@@ -256,7 +270,7 @@ class LinkedList:
         # пройтись по кожному елементу листа, окрім останнього,
         # перевірити на рівність значення з аргументу й листа,
         # видалити при збіжності, ні - продовжити ітерацію
-        while current.next is not None:
+        while current.next:
             if current.data == value:
                 next_node = current.next
                 prev_node = current.prev
@@ -270,10 +284,9 @@ class LinkedList:
         if current.data == value: 
             return self.pop()
 
-        print('Element was\'nt found')
+        print('Element wasn\'t found')
         print(self)
         return None
-
 
     def is_empty(self):
         """
@@ -289,7 +302,14 @@ class LinkedList:
         for i in range(len_rows):
             row = LinkedList()
             for j in range(len_columns):
-                row.append(0)
+                row.unshift(0)
                 
             list.append(row)
+        return list
+
+    @staticmethod
+    def get_array(length):
+        list = LinkedList()
+        for i in range(length):
+            list.unshift(0)
         return list
