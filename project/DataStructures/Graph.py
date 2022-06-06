@@ -12,12 +12,14 @@ class Graph:
         self.data = LinkedList.get_matrix(num_nodes)
         # визначає, чи є граф орієнтованим
 
+
     def __repr__(self):
         string = ""
         for idx_node, neighbours in enumerate(self.data):
             string += f"{self.vertexes[idx_node]}: " +\
                 f"{list(self.vertexes[i] for i in neighbours)}\n"
         return string
+
 
     def print_weights(self):
         string = ""
@@ -26,8 +28,10 @@ class Graph:
                     f"{weights}\n"
         print(string)
 
+
     def addVertex(self, vertex):
         self.vertexes.append(vertex)
+
 
     def addEdge(self, edge):
         weighted = len(edge) == 3
@@ -44,6 +48,7 @@ class Graph:
             if weighted:
                 self.weights[n2].append(weight)
 
+
     def delete_connection(self, v1, v2):
         # проходимося по кожній сусідній вершині v1 
         for i, vertex in enumerate(self.data[v1]):
@@ -57,10 +62,12 @@ class Graph:
         if len(self.data[v1]) == 0:
             self.vertexes.remove(v1)
 
+
     def delete_edge(self, v1, v2):
         self.delete_connection(v1, v2)
         if not self.directed:
             self.delete_connection(v2, v1)
+
 
     def bfs(self, root=0):
         result = LinkedList()
@@ -84,6 +91,7 @@ class Graph:
                     queue.append(node)
         return result
 
+
     def dfs(self, root=0):
         result = LinkedList()
         stack = LinkedList()
@@ -103,24 +111,31 @@ class Graph:
                         stack.append(n)
         return result
 
+
     def update_distances(self, current, distance):
         neighbours = self.data[current]
         weights = self.weights[current]
 
         for i, node in enumerate(neighbours):
             weight = weights[i]
+            # оновлення відстані, якщо відстань до current 
+            # + відстань до вершини від current менша, ніж є наразі
             if distance[current] + weight < distance[node]:
                 distance[node] = distance[current] + weight
+
 
     def pick_next_node(self, distance, visited):
         min_distance = float('inf')
         min_node = None
+        # ітерація по всіх номерах вершин графа
         for node in range(len(distance)):
+            # пошук невідвіданої вершини з найменшою відстанню 
             if not visited[node] and distance[node] < min_distance:
                 min_node = node
                 min_distance = distance[node]
         return min_node
     
+
     # Dijkstra’s Shortest Path Algorithm
     def shortest_path(self, source, target):
         visited = [False] * self.num_nodes
@@ -145,6 +160,7 @@ class Graph:
                 queue.append(next_node)
 
         return distance[target]
+
 
     def all_shortests_paths(self, source):
         for i in range(self.num_nodes):

@@ -33,7 +33,7 @@ class TreeNodeIterator:
 
 
 class TreeNode:
-    def __init__(self, key):
+    def __init__(self, key=None):
         self.key = key
         self.left = None
         self.right = None
@@ -145,7 +145,7 @@ class TreeNode:
 
 
 class BSTNode(TreeNode):
-    def __init__(self, key, value=None):
+    def __init__(self, key=None, value=None):
         super().__init__(key)
         self.value = value
         self.parent = None
@@ -165,6 +165,10 @@ class BSTNode(TreeNode):
         # дійшли до пустого вузла, ініціалізуємо його 
         if self is None:
             self = BSTNode(key, value)
+
+        elif self.key is None:
+            self.key = key
+            self.value = value
         
         # пройти до потрібного місця рекурсивним шляхом.
         elif self.key < key:

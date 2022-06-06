@@ -5,8 +5,7 @@ from csv import DictReader
 
 edges = LinkedList()
 vertexes = LinkedList()
-bst = BSTNode('me', '0.0.0.0')
-vertexes.append('0.0.0.0')
+bst = BSTNode()
 
 # додавання ребер у edges
 with open("edges.csv") as f:
@@ -41,7 +40,6 @@ for i in edges:
     g1.addEdge(i)
 for v in vertexes:
     g1.addVertex(v)
-
 
 print("IP Connections:")
 print(g1)
