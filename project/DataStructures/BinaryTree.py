@@ -165,7 +165,8 @@ class BSTNode(TreeNode):
         # дійшли до пустого вузла, ініціалізуємо його 
         if self is None:
             self = BSTNode(key, value)
-
+        
+        # BSTNode - пуста. Заповнити поля вершини
         elif self.key is None:
             self.key = key
             self.value = value

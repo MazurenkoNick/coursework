@@ -170,7 +170,7 @@ class LinkedList:
         while current.next:
             current = current.next
 
-        current.next = node
+        current.next = node # додаємо в хвіст
         node.prev = current
 
 

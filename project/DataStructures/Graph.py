@@ -3,19 +3,21 @@ from .DoublyLinkedList import LinkedList
 class Graph:
     def __init__(self, num_nodes, directed=False):
         self.num_nodes = num_nodes
-        self.vertexes = LinkedList()
+        self.vertexes = LinkedList() #вершини - [me, 1.1.1.1, 2.2.2.2, 3.3.3.3, 4.4.4.4, 5.5.5.5] 
         self.directed = directed
         # weighted & weights:
         self.weighted = False
-        self.weights = LinkedList.get_matrix(num_nodes)
+        self.weights = LinkedList.get_matrix(num_nodes) # матриця вагів між вершинами [[...,36],[...,36],[]]
         # edges: 
-        self.data = LinkedList.get_matrix(num_nodes)
+        self.data = LinkedList.get_matrix(num_nodes) # матриця зв'язків між вершинами [[...,1],[...,0]]
         # визначає, чи є граф орієнтованим
 
 
     def __repr__(self):
         string = ""
-        for idx_node, neighbours in enumerate(self.data):
+        # self.data = [[...,1],[...,0]]
+        # 0, [...,1]
+        for idx_node, neighbours in enumerate(self.data): # прохід по матриці зв'язків між вершинами
             string += f"{self.vertexes[idx_node]}: " +\
                 f"{list(self.vertexes[i] for i in neighbours)}\n"
         return string
@@ -29,34 +31,34 @@ class Graph:
         print(string)
 
 
-    def addVertex(self, vertex):
+    def addVertex(self, vertex): # [me, 1.1.1.1, ...]
         self.vertexes.append(vertex)
 
 
-    def addEdge(self, edge):
+    def addEdge(self, edge): # [0,1,36]
         weighted = len(edge) == 3
         if weighted:
             n1, n2, weight = edge
-            self.weights[n1].append(weight)
+            self.weights[n1].append(weight) # self.weights = [[...,36],[],[]]
             self.weighted = True
         else:
             n1, n2 = edge
-        self.data[n1].append(n2)
+        self.data[n1].append(n2) # self.data = [[...,1],[],[]]
             
         if not self.directed:
-            self.data[n2].append(n1)
+            self.data[n2].append(n1) # self.data = [[...,1],[...,0]]
             if weighted:
-                self.weights[n2].append(weight)
+                self.weights[n2].append(weight) # self.weights = [[...,36],[...,36],[]]
 
 
-    def delete_connection(self, v1, v2):
+    def delete_connection(self, v1, v2): # 0, 1
         # проходимося по кожній сусідній вершині v1 
-        for i, vertex in enumerate(self.data[v1]):
+        for i, vertex in enumerate(self.data[v1]): #[[...,1]]
             # якщо поточна сусідн. верш. дорівнює v2
             if vertex == v2:
                 # видалити сусіда v1, відповідно видалити вагу
-                self.data[v1].remove(v2)
-                weight = self.weights[v1][i]
+                self.data[v1].remove(v2) #[[...,1]] - видалення 1-ї вершини з листа №0
+                weight = self.weights[v1][i] #[[...,36],[...,36],[]] - видалення 1-ї ваги з листа №0
                 self.weights[v1].remove(weight)
         # якщо більше немає з'єднань - видалити її з листа вершин
         if len(self.data[v1]) == 0:
