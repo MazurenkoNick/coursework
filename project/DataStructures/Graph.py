@@ -22,20 +22,10 @@ class Graph:
                 f"{list(self.vertexes[i] for i in neighbours)}\n"
         return string
 
-
-    def print_weights(self):
-        string = ""
-        for idx_node, weights in enumerate(self.weights):
-            string += f"{self.vertexes[idx_node]}:" +\
-                    f"{weights}\n"
-        print(string)
-
-
-    def addVertex(self, vertex): # [me, 1.1.1.1, ...]
+    def addVertex(self, vertex): # me, 1.1.1.1, ...
         self.vertexes.append(vertex)
 
-
-    def addEdge(self, edge): # [0,1,36]
+    def addEdge(self, edge): # [,3,36]
         weighted = len(edge) == 3
         if weighted:
             n1, n2, weight = edge
@@ -51,7 +41,7 @@ class Graph:
                 self.weights[n2].append(weight) # self.weights = [[...,36],[...,36],[]]
 
 
-    def delete_connection(self, v1, v2): # 0, 1
+    def delete_connection(self, v1, v2): # 0, 3
         # проходимося по кожній сусідній вершині v1 
         for i, vertex in enumerate(self.data[v1]): #[[...,1]]
             # якщо поточна сусідн. верш. дорівнює v2

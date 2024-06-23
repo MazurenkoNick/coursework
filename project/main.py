@@ -3,8 +3,8 @@ from DataStructures.BinaryTree import BSTNode
 from DataStructures.DoublyLinkedList import LinkedList
 from csv import DictReader
 
-edges = LinkedList() # ребра - матриця ребер з вагами [[0,1,36], [0,5,12], ...] з edge.csv файлу
-vertexes = LinkedList() # вершини - [me, 1.1.1.1, 2.2.2.2, 3.3.3.3, 4.4.4.4, 5.5.5.5]
+edges = LinkedList() # ребра - використовується в графі. лист з вершинами і вагами [[0,1,36], [0,5,12], ...] з edge.csv файлу
+vertexes = LinkedList() # ребра - використовується в графі. вершини - [me, 1.1.1.1, 2.2.2.2, 3.3.3.3, 4.4.4.4, 5.5.5.5]
 bst = BSTNode() # бінарне дерево для виведення таблиці з іменами та відповідними ip адресами (ключ - ім'я, значення - список id)
 
 # додавання ребер у edges

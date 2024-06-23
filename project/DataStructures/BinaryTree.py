@@ -26,7 +26,7 @@ class TreeNodeIterator:
         return node
 
     def _append_left_side(self):
-        """adds every left element of the current node to the stack"""
+        """adds current node andevery left element of the current node to the stack"""
         while self.current:
             self.stack.append(self.current)
             self.current = self.current.left
@@ -126,29 +126,10 @@ class TreeNode:
 
         return self
 
-
-    def display_keys(self, space='\t', level=0):    
-        # якщо вершина пуста
-        if self is None:
-            print(space*level + '∅')
-            return
-
-        # якщо вершина - лист
-        if self.left is None and self.right is None:
-            print(space*level + str(self.key))
-            return
-    
-        # якщо вершина має дочірні вершини
-        TreeNode.display_keys(self.right, space, level+1)
-        print(space*level + str(self.key))
-        TreeNode.display_keys(self.left,space, level+1)
-
-
 class BSTNode(TreeNode):
     def __init__(self, key=None, value=None):
         super().__init__(key)
         self.value = value
-        self.parent = None
 
     def print_all(self):
         string = ''
@@ -174,11 +155,9 @@ class BSTNode(TreeNode):
         # пройти до потрібного місця рекурсивним шляхом.
         elif self.key < key:
             self.right = BSTNode.insert(self.right, key, value)
-            self.right.parent = self
 
         elif self.key > key:
             self.left = BSTNode.insert(self.left, key, value)
-            self.left.parent = self
         return self
 
     def update(self, key, value):

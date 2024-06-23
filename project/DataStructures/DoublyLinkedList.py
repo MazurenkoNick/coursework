@@ -9,7 +9,6 @@ class Node:
     def __str__(self):
         return str(self.data)
 
-
 class LinkedListIterator:
     def __init__(self, head):
         self.current = head
@@ -82,21 +81,6 @@ class LinkedList:
     def __getitem__(self, id):
         node = self._get_by_id(id)
         return node.data if node else None
-
-
-    def __add__(self, other):
-        """concatenate two lists"""
-        if isinstance(other, LinkedList):
-            list = LinkedList()
-            # додаємо всі елементи поточного листа
-            for node in self:
-                list.append(node.data)
-            # додаємо всі елементи іншого листа
-            for node in other:
-                list.append(node.data)
-            return list
-        return "Can't concatenate these two objects"
-
     
     def __contains__(self, value):
         # якщо лист пустий
@@ -230,7 +214,7 @@ class LinkedList:
         return node.data
 
 
-    def pop(self, idx=None):
+    def pop(self):
         """
         function deletes and returns the last element of the list
         """
@@ -305,11 +289,4 @@ class LinkedList:
                 row.unshift(0)
                 
             list.append(row)
-        return list
-
-    @staticmethod
-    def get_array(length):
-        list = LinkedList()
-        for i in range(length):
-            list.unshift(0)
         return list
